@@ -37,6 +37,187 @@
                 "com.unity3d.player.UnityPlayerActivity"
             ]
         },
-        "DrawableResources": []
+        "DrawableResources": [
+            {
+                "Id": "icon_1",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "e3953456f727ce34f83fa91ae0f071d1",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_2",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "55ff202894d49444db9303c30b3f9d2c",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_3",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "c6bc4be962159c34d92709d4bdbf6177",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_4",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "bb03b274365c83347b8771a9978459ad",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_5",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "d0141ca0b49e5954a87d69515ae342a3",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_6",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "7f31a4ad694bd5b40b8a3d047bd97589",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_6",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "fa6f800616a3e8d45bdea4ce7c8d2a59",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_7",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "88271268d6e6b0a468b7accf21306b65",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_8",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "da0e9d5f9fce5514a81d6e486cc9b74e",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_9",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "1a13fc8e5b779c94ebbeff7cc0d7fb8c",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_10",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "b6e3d7adafe83cb4d9664211cae47dfc",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_11",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "4f7c6f7364ce4d04dbe16ec8cb8bdd06",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_12",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "8f1d24386f37ca54d93083eba3fc6e5a",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_13",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "97cadbd2e8e1f114f961f21561e2eadd",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_14",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "9e222d974b30ef14598ff11a880fa2ed",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_15",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "30ba51be1e56cda40ba1ad0cb104a5c9",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_16",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "64193db3f89c4104d965b92df9e2cdc3",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_17",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "0c4ba7a745d0ee84da3e9f8ae44e60c1",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_18",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "a57c2bf74f380224aa5c7e378efc56bf",
+                    "type": 3
+                }
+            },
+            {
+                "Id": "icon_19",
+                "Type": 0,
+                "Asset": {
+                    "fileID": 2800000,
+                    "guid": "b9418b2f690c971439c5ee84082be2b8",
+                    "type": 3
+                }
+            }
+        ]
     }
 }
