@@ -7,36 +7,32 @@ using Unity.Notifications.Android;
 public class MainScript : MonoBehaviour
 {
 
-    public string debug_text = "init";
-    public Text DbText;
-    public int res = 0;
+    public string not_text=""; //string containing the text to print on the screen
+    public string not_title="HELLO WORLD!"; //string containing the title to print on the screen
+    public Text NotText; //Text object for the text printed on the screen
+    public Text NotTitle; //Text object for the text printed on the screen
+    public int notifications_to_schedule = 5; //number of notifications to be scheduled at every "add" call
+    public int time_between_notifications = 60; //seconds between the scheduling of a notification and the following one
 
-    string _channel_ID = "NotCH";
-    AndroidJavaClass android_class;
-    AndroidJavaObject unity_activity;
-    AndroidJavaObject unity_context;
-    AndroidJavaObject android_plugin_instance;
+    string _channel_ID = "NotifCh"; //identifier of the notification channel
+    AndroidJavaClass android_class; //class of the current activity
+    AndroidJavaObject unity_activity; //object representing the current activity
+    AndroidJavaObject unity_context; //object representing the current context
+    AndroidJavaObject android_plugin_instance; //instance of the NotificationManagerLib plugin
     AndroidNotificationChannel channel = new AndroidNotificationChannel()
     {
-        Id = "NotCH",
-        Name = "Default Channel",
+        Id = "NotifCh",
+        Name = "Default Notification Channel",
         Importance = Importance.High,
         Description = "Generic notifications",
+        EnableVibration = true,
     };
-    AndroidNotification notification;
+    AndroidNotification notification; //notification object used as blueprint
 
-
-    public void Test()
-    {
-        AndroidNotificationCenter.RegisterNotificationChannel(channel);
-        Debug.Log("Button pressed");
-        //android_plugin_instance.Call("Notify", (char)0, "Title", "Text");
-
-        notification= new AndroidNotification("title", "string text", System.DateTime.Now);
-        AndroidNotificationCenter.SendNotification(notification, _channel_ID);
-        debug_text = "Instant notify";
-    }
-
+    /// <summary>
+    /// Function used to initialize the android plugin
+    /// </summary>
+    /// <param name="plugin_name"> string containing the package of the android plugin that has to be initialized</param>
     void InitializePlugin(string plugin_name)
     {
         android_class = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -46,43 +42,89 @@ public class MainScript : MonoBehaviour
         if (android_plugin_instance == null)
         {
             Debug.Log("Plugin instance error!");
-            debug_text = "Plugin instance error!";
+            //not_text = "Plugin instance error!";
         }
         else
         {
             android_plugin_instance.CallStatic("ReceiveUnityActivity", unity_activity);
             android_plugin_instance.CallStatic("ReceiveUnityContext", unity_context);
-            
-            debug_text = "Plugin instance OK!";
+            Debug.Log("Plugin instance OK!");
+            //not_text = "Plugin instance OK!";
         }
     }
 
+    /// <summary>
+    /// Function used to check if a new notification has to be sent and fire it through the pre-defined channel
+    /// </summary>
+    void CheckAndSendNotifications()
+    {
+        char notify_id = (char)0;
+        int img_id = 0;
+        string title = "Default title";
+        string text = "Default text";
+        string icon = "icon_";
+        notify_id = android_plugin_instance.Call<char>("CheckNot");
+        if (notify_id != (char)0)
+        {
+            title = android_plugin_instance.Call<string>("GetNotTitle", notify_id);
+            text = android_plugin_instance.Call<string>("GetNotText", notify_id);
+            img_id = android_plugin_instance.Call<int>("GetNotImgIDByID", notify_id);
+            icon = "icon_" + img_id.ToString();
+            //not_title = title;
+            notification.Title = title;
+            notification.Text = text;
+            notification.ShouldAutoCancel = true;
+            notification.IntentData = "intent";
+            notification.SmallIcon = icon;
+            notification.FireTime = System.DateTime.Now;
+            AndroidNotificationCenter.SendNotificationWithExplicitID(notification, _channel_ID, notify_id);
+            android_plugin_instance.Call("DelSingleNot", notify_id);
+        }
+    }
+
+        public void ListNotifications()
+    {
+        /* Not implemented!! */
+        android_plugin_instance.Call("ShowToastNot", "Not implemented....work in progress");
+    }
+
+    /// <summary>
+    /// Function used to schedule a new set of notifications ('notifications_to_schedule' notifications, one every 'time_between_notifications' seconds)
+    /// </summary>
     public void ScheduleNotifications()
     {
         if (android_plugin_instance != null)
         {
-            android_plugin_instance.Call("AddNot");
-            //debug_text = "Notification scheduled! "+res.ToString();
+            android_plugin_instance.Call("AddNot", notifications_to_schedule, time_between_notifications);
         }
     }
 
+    /// <summary>
+    /// Function used to delete all the scheduled notifications
+    /// </summary>
     public void DeleteAllNotifications()
     {
         if (android_plugin_instance != null)
         {
             android_plugin_instance.Call("DelAllNot");
-            //debug_text = "Notification deleted!";
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        bool res;
+        NotText = GameObject.Find("Text").GetComponent<Text>();
+        NotTitle = GameObject.Find("Title").GetComponent<Text>();
+        AndroidNotificationCenter.RegisterNotificationChannel(channel);
         InitializePlugin("com.example.notificationmanagerlib.NotificationManagerClass");
         if (android_plugin_instance != null)
         {
-            res=android_plugin_instance.Call<int>("createNotificationChannel");
-            debug_text = "Channel created with return " + res.ToString();
+            /* Not necessary until the unity context is correctly managed by the android plugin
+             * 
+            res = android_plugin_instance.Call<bool>("createNotificationChannel");
+            not_text = "Channel created with return " + res.ToString();
+            */
         }
         var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
         if (notificationIntentData != null)
@@ -90,7 +132,13 @@ public class MainScript : MonoBehaviour
             var id = notificationIntentData.Id;
             var channel = notificationIntentData.Channel;
             var notification = notificationIntentData.Notification;
-            debug_text = notification.Text;
+            not_text = notification.Text;
+            not_title = notification.Title;
+        }
+        else
+        {
+            not_text = "Notification manager app by Pont Simone";
+            not_title = "HELLO WORLD!";
         }
     }
 
@@ -98,27 +146,22 @@ public class MainScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        char notify_id = (char)0;
-        string title="Default title"; 
-        string text="Default text";
+        var notificationIntentData = AndroidNotificationCenter.GetLastNotificationIntent();
+        
         if (android_plugin_instance != null)
         {
-            notify_id = android_plugin_instance.Call<char>("CheckNot");
-            if (notify_id != 0)
+            if (notificationIntentData != null)
             {
-                title= android_plugin_instance.Call<string>("GetNotTitle", notify_id);
-                text = android_plugin_instance.Call<string>("GetNotText", notify_id);
-                //android_plugin_instance.Call("DelSingleNot", notify_id);
-                debug_text = title;
-                notification.Title = title;
-                notification.Text = text; 
-                notification.ShouldAutoCancel = true;
-                notification.IntentData = " ";
-                notification.FireTime = System.DateTime.Now;
-                AndroidNotificationCenter.SendNotificationWithExplicitID(notification, _channel_ID, notify_id);
-                //AndroidNotificationCenter.SendNotification(notification, "channel_id");
+                var id = notificationIntentData.Id;
+                var channel = notificationIntentData.Channel;
+                var notification = notificationIntentData.Notification;
+                not_text = notification.Text;
+                not_title = notification.Title;
+                //android_plugin_instance.Call("DelSingleNot", id);
             }
+            CheckAndSendNotifications();
         }
-        DbText.text = debug_text;
+        NotText.text = not_text;
+        NotTitle.text = not_title;
     }
 }
